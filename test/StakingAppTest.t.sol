@@ -7,7 +7,6 @@ import "../src/StakingToken.sol";
 import "../src/StakingApp.sol";
 
 contract StakingAppTest is Test {
-    
     StakingApp stakingApp;
     StakingToken stakingToken;
 
@@ -21,10 +20,10 @@ contract StakingAppTest is Test {
     uint256 fixedStakingAmount_ = 10 ether;
     uint256 rewardPerPeriod_ = 1 ether;
 
-    
     function setUp() public {
         stakingToken = new StakingToken(name_, symbol_);
-        stakingApp = new StakingApp(address(stakingToken), owner_, stakingPerdiod_, fixedStakingAmount_, rewardPerPeriod_);
+        stakingApp =
+            new StakingApp(address(stakingToken), owner_, stakingPerdiod_, fixedStakingAmount_, rewardPerPeriod_);
     }
 
     function testStakingTokenCorrectlyDeployed() external view {
@@ -34,5 +33,4 @@ contract StakingAppTest is Test {
     function testStakingAppCorrectlyDeployed() external view {
         assert(address(stakingApp) != address(0));
     }
-
 }
