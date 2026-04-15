@@ -56,7 +56,7 @@ contract StakingApp is Ownable {
     }
 
     function claimReward() external {
-        require(userBalance[msg.sender] == fixedStakingAmount, "No staking");
+        require(userBalance[msg.sender] == fixedStakingAmount, "Not staking");
 
         uint256 elapsedPeriod_ = block.timestamp - elapsedTime[msg.sender];
         require(elapsedPeriod_ >= stakingPerdiod, "Not yet claimable");
