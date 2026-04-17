@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: MIT
-
 pragma solidity 0.8.24;
 
 import "forge-std/Test.sol";
@@ -21,14 +20,17 @@ contract StakingAppTest is Test {
     uint256 fixedStakingAmount_ = 10 ether;
     uint256 rewardPerPeriod_ = 1 ether;
 
+    // User
     address randomUser_ = vm.addr(2);
 
+    // Setup function to deploy the contracts before each test
     function setUp() public {
         stakingToken = new StakingToken(name_, symbol_);
         stakingApp =
             new StakingApp(address(stakingToken), owner_, stakingPerdiod_, fixedStakingAmount_, rewardPerPeriod_);
     }
 
+    // Test cases
     function testStakingTokenCorrectlyDeployed() external view {
         assert(address(stakingToken) != address(0));
     }
@@ -82,6 +84,7 @@ contract StakingAppTest is Test {
         vm.stopPrank();
     }
 
+    // Test that a user can deposit the correct amount of tokens and that their balance and elapsed time are updated correctly
     function testDepositTokenCorrectly() external {
         vm.startPrank(randomUser_);
 
@@ -103,6 +106,7 @@ contract StakingAppTest is Test {
         vm.stopPrank();
     }
 
+    // Test that a user cannot deposit more than once and that their balance and elapsed time are not updated after the second deposit attempt
     function testuserCannotDepositThanOnce() external {
         vm.startPrank(randomUser_);
 
@@ -129,6 +133,7 @@ contract StakingAppTest is Test {
         vm.stopPrank();
     }
 
+    // Test that a user can only withdraw if their balance is greater than zero and that their balance is updated correctly after withdrawal
     function testCanOnlyWithdrawIfBalanceIsGreaterThanZero() external {
         vm.startPrank(randomUser_);
 
@@ -141,6 +146,7 @@ contract StakingAppTest is Test {
         vm.stopPrank();
     }
 
+    // Test that a user can withdraw their staked tokens and that their balance is updated correctly after withdrawal
     function testWithdrawTokenCorrectly() external {
         vm.startPrank(randomUser_);
 
@@ -167,6 +173,7 @@ contract StakingAppTest is Test {
         vm.stopPrank();
     }
 
+    // Test that a user cannot claim rewards if they are not currently staking and that the appropriate error message is returned
     function testCannotClaimIfNotStaking() external {
         vm.startPrank(randomUser_);
 
@@ -175,6 +182,7 @@ contract StakingAppTest is Test {
         vm.stopPrank();
     }
 
+    // Test that a user cannot claim rewards if the required staking period has not elapsed and that the appropriate error message is returned
     function testCannotClaimIfNotElapsedTime() external {
         vm.startPrank(randomUser_);
 
@@ -198,6 +206,7 @@ contract StakingAppTest is Test {
         vm.stopPrank();
     }
 
+    // Test that a user cannot claim rewards if the contract does not have enough Ether to pay the reward and that the appropriate error message is returned
     function testShouldRevertIfNotEther() external {
         vm.startPrank(randomUser_);
 
@@ -222,6 +231,7 @@ contract StakingAppTest is Test {
         vm.stopPrank();
     }
 
+    // Test that a user can claim rewards correctly after the required staking period has elapsed and that their balance and elapsed time are updated correctly after claiming rewards
     function testCanClaimRewardsCorrectly() external {
         vm.startPrank(randomUser_);
 
